@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DPKO Dashboard</title>
+
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,900' rel='stylesheet' type='text/css'>
+    <link type="text/css" rel="stylesheet" href="http://nickqizhu.github.io/dc.js/css/dc.css"/>
+      <link type="text/css" rel="stylesheet" href="css/style.css"/>
+      <link type="text/css" rel="stylesheet" href="css/jquery.mCustomScrollbar.css"/>
+      <!--<link type="text/css" rel="stylesheet" href="/js/lib/jquery.jqGrid-4.5.4/css/ui.jqgrid.css"/>-->
+      <!--<link type="text/css" rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>-->
+      <link type="text/css" rel="stylesheet" href="css/jquery-ui.css"/>
+      <!--<script src="css/jquery-ui-1.10.3.custom.min.css"></script>-->
+      <link type="text/css" rel="stylesheet" href="css/ui.jqgrid.css"/>
+
+      <script type="text/javascript" src="js/lib/d3.min.js"></script>
+      <script type="text/javascript" src="js/lib/d3/d3.csv.js"></script>
+      <script type="text/javascript" src="js/lib/d3/d3.geo.js"></script>
+      <script type="text/javascript" src="js/lib/d3/d3.geom.js"></script>
+      <script type="text/javascript" src="js/lib/crossfilter.min.js"></script>
+      <script type="text/javascript" src="js/lib/dc.js"></script>
+
+      <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+      <!--<script src="http:////code.jquery.com/ui/1.10.3/jquery-ui.jss"></script>-->
+      <script type="text/javascript" src="js/lib/jquery.mCustomScrollbar.concat.min.js"></script>
+
+
+      <script src="js/lib/jquery.jqGrid-4.5.4/js/jquery.jqGrid.min.js"></script>
+
+
+      <script type="text/javascript" src="js/clsMissionSelector.js"></script>
+      <script type="text/javascript" src="js/clsTimeSelector.js"></script>
+      <script type="text/javascript" src="js/clsMap.js"></script>
+      <script type="text/javascript" src="js/clsSubjectSelector.js"></script>
+      <script type="text/javascript" src="js/clsTimeSelector.js"></script>
+      <script type="text/javascript" src="js/clsReportsTable.js"></script>
+      <script type="text/javascript" src="js/clsSourceSelector.js"></script>
+      <script type="text/javascript" src="js/clsTagsSelector.js"></script>
+      <script type="text/javascript" src="js/clsPager.js"></script>
+      <script type="text/javascript" src="js/clsVisualizationMgr.js"></script>
+
+      <script type="text/javascript" src="js/bootstrap.js"></script>
+
+  </head>
+  <body onload="bootstrap()">
+    <!--MAP CONTAINER WICH WILL COVER THE COMPLETE SCREEN-->
+    <div id="map-container"></div>
+
+    <!--MAP ZOOM IN ZOOM OUT BUTTONS-->
+    <!--<div id="zoom-btn-cntnr">
+        <div id="zoom-in-map-btn" class="zoom-btn">+</div>
+        <div id="zoom-out-map-btn" class="zoom-btn">-</div>
+    </div>-->
+
+    <!--TITLE DIV-->
+    <div id='vis-title'><table width="100%">
+        <tr valign="bottom">
+            <td>
+                <div class="title-txt">UNOCC Incident Tracking System</div>
+            </td>
+            <td>
+                <div class="login-title">Login</div>
+            </td>
+        </tr>
+    </table></div>
+
+    <!--RIGHT FILTERS PANEL-->
+    <div id="right-filters-pnl" class="floating-containers">
+        <table cellspacing="20">
+            <tr><td>
+                <!--DATE RANGE-->
+                <table cellspacing="0" cellpadding="0" width="100%" style="padding : 3px">
+                    <tr>
+                        <td>
+                            <div class="filter-caption">DATE RANGE</div>
+                        </td>
+                        <td align="right"><div id="date-range-reset" class="reset-btn">RESET</div></td>
+                    </tr>
+                </table>
+
+                <div>
+                    <div id="time-filter-scale">
+                    </div>
+                </div>
+            </td></tr>
+            <tr><td>
+                <!--TOTAL REPORTS-->
+                <div class="filter-caption">LOCATION <span id="selected-missions-count"></span></div>
+                <div>
+                    <table cellspacing="0" cellpadding="0" width="100%" style="padding : 3px">
+                        <tr>
+                            <td width="55px">Sort By: </td>
+                            <td width="55px"><div id="mission-sort-by-count" class="missions-btn">Count</div></td>
+                            <td width="50px"><div id="mission-sort-by-name" class="missions-btn">A-Z</div></td>
+                            <td align="right"><div id="missions-reset" class="reset-btn">RESET</div></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="mission-selectr-scroll">
+                    <div id="mission-selector-cntnr">
+                    </div>
+                </div>
+            </td></tr>
+            <tr><td>
+                <table cellspacing="0" cellpadding="0" width="100%" style="padding : 3px">
+                    <tr>
+                        <td>
+                            <div class="filter-caption">SOURCE <span id="selected-source-count"></span></div>
+                        </td>
+                        <td align="right"><div id="source-filter-reset" class="reset-btn">RESET</div></td>
+                    </tr>
+                </table>
+                <div>
+                    <div id="source-filter-cntnr">
+                    </div>
+                </div>
+            </td></tr>
+            <tr><td>
+                <table cellspacing="0" cellpadding="0" width="100%" style="padding : 3px">
+                    <tr>
+                        <td>
+                            <div class="filter-caption">TAG SEARCH</div>
+                        </td>
+                        <td align="right"><div id="tag-search-reset" class="reset-btn">RESET</div></td>
+                    </tr>
+                </table>
+
+                <div>
+                    <div id="tags-filter-cntnr">
+                    </div>
+                </div>
+            </td></tr>
+        </table>
+    </div>
+
+    <!--collection of the bottom filters and report table-->
+    <div id="bottom-filter-conrainer">
+
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <td>
+                    <div id="subjects-filter-cntnr" class="floating-containers">
+                        <table>
+                            <tr>
+                                <td valign="bottom">
+                                    <div class="filter-caption">SUBJECT</div>
+                                </td>
+                                <td valign="bottom">
+                                    <div id="subjects-filter"></div>
+                                </td>
+                                <td valign="bottom"><div id="subject-reset" class="reset-btn">RESET</div></td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <div id="reports-data-tbl-cntnr" class="floating-containers">
+            <div id="reports-tbl-header" class="reports-tbl-header">
+                <div class="filter-caption">REPORTS <span id="expand-collapse-btn"></span></div>
+            </div>
+            <div id="collapsible-reports-el">
+                <div id="data-tbl-pager"></div>
+                <table id="reports-data-tbl"><tr><td></td></tr></table>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div id="tooltip">
+        <table cellspacing="0" cellpadding="0">
+            <tr>
+                <td>
+                    <div class="hint-title">UNMIT</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="hint-chart-div"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                                <div class="major-subjects-title">Major Subjects</div>
+                                <div id="major-subjects"></div>
+                            </td>
+                            <td>
+                                <div id="top-tags"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+  </body>
+</html>
