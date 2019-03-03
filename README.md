@@ -1,3 +1,3 @@
 # scatter_map
 
-https://github.com/digvijayu/corpu_search
+http://digvijayu.github.io/scatter_map/
